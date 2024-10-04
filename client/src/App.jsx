@@ -7,9 +7,18 @@ import ExplorePage from "./pages/ExplorePage";
 import LikePage from "./pages/LikePage";
 import Sidebar from "./components/Sidebar";
 import { Toaster } from "react-hot-toast";
+import { useAuthContext } from "./context/AuthContext";
+import Spinner from "./components/Spinner";
 
 const App = () => {
-  const authUser = true;
+  const { authUser, loading } = useAuthContext();
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div className="flex">
       <Sidebar />
@@ -33,7 +42,7 @@ const App = () => {
             element={authUser ? <LikePage /> : <Navigate to={"/login"} />}
           />
         </Routes>
-        <Toaster/>
+        <Toaster />
       </div>
     </div>
   );

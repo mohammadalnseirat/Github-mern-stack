@@ -1,9 +1,9 @@
 import React from "react";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { handleSignInWithGithub } from "../lib/function";
 
 const LoginPage = () => {
-  // TODO ADD LOGIN FUNCTION
   return (
     <div className="flex flex-col items-center justify-center h-screen px-6 py-8 mx-auto lg:py-0">
       <div className="w-full bg-glass rounded-lg shadow-md md:mt-0 sm:max-w-md xl:p-0">
@@ -12,6 +12,8 @@ const LoginPage = () => {
             Login to your account
           </h1>
           <button
+            type="button"
+            onClick={handleSignInWithGithub}
             className="text-gray-100 bg-[#24292f] hover:bg-[#24292f]/90 focus:ring-4 focus:ring-[#24292f]/50
           font-medium flex items-center justify-center w-full gap-2 p-2 rounded-lg"
           >

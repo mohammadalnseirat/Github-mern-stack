@@ -1,9 +1,9 @@
 import React from "react";
 import { FaGithub, FaUnlockAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { handleSignInWithGithub } from "../lib/function";
 
 const SignUpPage = () => {
-  // TODO ADD SIGN UP FUNCTION
   return (
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
       <div className="bg-glass w-full rounded-lg shadow-md md:mt-0 sm:max-w-md xl:p-0">
@@ -11,7 +11,10 @@ const SignUpPage = () => {
           <h1 className="text-xl font-bold md:text-3xl text-center capitialize font-mono">
             Create Account
           </h1>
-          <button className="text-gray-100 capitalize bg-[#24292f] hover:bg-[#24292f]/90 focus:ring-4 focus:ring-[#24292f]/50 font-medium rounded-lg  p-2 flex items-center gap-2 w-full justify-center text-center">
+          <button
+            onClick={handleSignInWithGithub}
+            className="text-gray-100 capitalize bg-[#24292f] hover:bg-[#24292f]/90 focus:ring-4 focus:ring-[#24292f]/50 font-medium rounded-lg  p-2 flex items-center gap-2 w-full justify-center text-center"
+          >
             <FaGithub className="w-6 h-6" />
             Sign up with Github
           </button>

@@ -24,7 +24,6 @@ const HomePage = () => {
         setUserProfile(userProfile);
         repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); // descending , recent will be at the top
         setRepos(repos);
-        console.log("repos", repos);
         return { userProfile, repos };
       } catch (error) {
         toast.error("Error While Get User Profile and Repos!");
