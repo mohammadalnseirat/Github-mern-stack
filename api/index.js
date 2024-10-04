@@ -32,7 +32,7 @@ app.use("/api/v1/explore", exploreRoutes);
 app.use(express.static(path.join(__dirname, "/client/build")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
 });
 
 // listen to the port:
