@@ -9,6 +9,7 @@ import {
   RiUserUnfollowLine,
 } from "react-icons/ri";
 import { formatMemberSince } from "../utils/functions";
+import LikeProfile from "./LikeProfile";
 
 const ProfileInfo = ({userProfile}) => {
   // const userProfile = {
@@ -43,6 +44,7 @@ const ProfileInfo = ({userProfile}) => {
           </a>
           {/* View On Github */}
           <div className="flex flex-col items-center gap-2">
+            <LikeProfile userProfile={userProfile} />
             <a
               href={userProfile?.html_url}
               target="_blank"

@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FaHeart } from "react-icons/fa";
+import { formatDate } from "../utils/functions";
 
 const LikePage = () => {
+  const [likes, setLikes] = useState([]);
+  // Simulate fetching data from API:
+  useEffect(() => {
+    const getLikedBy = async () => {
+      try {
+        const res = await fetch("/api/v1/users/likes", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.message);
+        }
+        setLikes(data.likedBy);
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    // Call the function:
+    getLikedBy();
+  }, []);
+  console.log(likes);
   return (
     <div className="relative overflow-x-auto shadow-md rounded-lg px-4">
       <table className="w-full text-sm text-left rtl:text-right bg-glass overflow-hidden">
@@ -22,35 +45,38 @@ const LikePage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-glass  border-b border-b-gray-400">
-            <td className="w-4 p-4 ">
-              <div className="flex items-center">
-                <span>1</span>
-              </div>
-            </td>
-            <th
-              scope="row"
-              className="flex items-center  px-6 py-4 whitespace-nowrap"
+          {likes.map((user, idx) => (
+            <tr
+              key={user.username}
+              className="bg-glass  border-b border-b-gray-400"
             >
-              <img
-                className="w-10 h-10 rounded-full"
-                src={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXJr-fGkiy1DE5A0JNOkcmCNGcXuQXdzENZA&s"
-                }
-                alt="profile-image"
-              />
-              <div className="ps-3">
-                <div className="text-base font-semibold">Alaa</div>
-              </div>
-            </th>
-            <td className="px-6 py-4">dasasa</td>
-            <td className="px-6 py-4">
-              <div className="flex items-center gap-2">
-                <FaHeart className="w-6 h-6 text-red-600" />
-                Liked on your Profile
-              </div>
-            </td>
-          </tr>
+              <td className="w-4 p-4 ">
+                <div className="flex items-center">
+                  <span>{idx + 1}</span>
+                </div>
+              </td>
+              <th
+                scope="row"
+                className="flex items-center  px-6 py-4 whitespace-nowrap"
+              >
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={user.avatarUrl}
+                  alt="profile-image"
+                />
+                <div className="ps-3">
+                  <div className="text-base font-semibold">{user.username}</div>
+                </div>
+              </th>
+              <td className="px-6 py-4">{formatDate(user.likedDate)}</td>
+              <td className="px-6 py-4">
+                <div className="flex items-center gap-2">
+                  <FaHeart className="w-6 h-6 text-red-600" />
+                  Liked on your Profile
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

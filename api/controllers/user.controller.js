@@ -27,3 +27,50 @@ export const getProfileUserAndRepos = async (req, res, next) => {
     next(error);
   }
 };
+
+// 2-Function to Like Profile:
+export const likeProfile_post = async (req, res, next) => {
+  const { username } = req.params;
+  try {
+    // Find the authenticated user:
+    const user = await User.findById(req.user._id.toString());
+    console.log(user, "auth User");
+
+    // find profile user to like :
+    const userToLike = await User.findOne({ username });
+    // check if there is no user to like:
+    if (!userToLike) {
+      return next(handleErrors(404, "User Not a memeber"));
+    }
+
+    // check if the user is already liked:
+    if (user.likedProfiles.includes(userToLike.username)) {
+      return next(handleErrors(400, "User Already Liked"));
+    }
+
+    // push the user to the liked profiles array:
+    user.likedProfiles.push(userToLike.username);
+    userToLike.likedBy.push({
+      username: user.username,
+      avatarUrl: user.avatarUrl,
+      likedDate: Date.now(),
+    });
+    // save both users:
+    await Promise.all([user.save(), userToLike.save()]);
+    res.status(200).json({ message: "Liked Profile SuccessFully!" });
+  } catch (error) {
+    console.log("Error While Creating Like Profile Api", error.message);
+    next(error);
+  }
+};
+
+// 3-Function to get Liked Profiles:
+export const getLikes = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id.toString());
+    res.status(200).json({ likedBy: user.likedBy });
+  } catch (error) {
+    console.log("Error While Creating Get Likes Api", error.message);
+    next(error);
+  }
+};
