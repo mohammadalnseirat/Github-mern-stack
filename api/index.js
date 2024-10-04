@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
 import cors from "cors";
 import passport from "passport";
 import session from "express-session";
@@ -11,6 +12,7 @@ import authRoutes from "./routes/auth.route.js";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
+const __dirname = path.resolve();
 app.use(
   session({ secret: "keyboard cat", resave: false, saveUninitialized: false })
 );
@@ -25,6 +27,13 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/explore", exploreRoutes);
+
+// Serve static assets in production
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // listen to the port:
 app.listen(PORT, () => {
